@@ -1,5 +1,6 @@
-﻿<html><head></head><body>
-
+﻿<html>
+<head></head>
+<body>
   <br>
   <input type = "button" value = "click me" onclick = "clickme()"/>
   <br><br>
@@ -8,12 +9,45 @@
       <div ng-model="email">a@x.com</div>
     </div>
   </header>
-	<script>
-function clickme() {
-  if (document.querySelectorAll('header > .user-block > [ng-model="email"]')[0].textContent=='a@x.com')
-  {
-    alert('Задание выполнено!');
-  }
+<script>
+function Elements(selector){
+    this.collection = document.querySelectorAll(selector);
+    this.elements = function elements(selector) {
+        this.collection = this.collection[0].querySelectorAll(selector);
+        return this;
+    }
+    this.first = function first() {
+        this.node = this.collection[0];
+        this.text = function text() {
+            return this.node.textContent; 
+        }
+        return this; 
+    }
+    return this;
 }
-	</script>
+
+function Selectors(){
+    this.tag = function tag(tag_selector) {
+        return tag_selector; 
+    }
+    this.css = function css(css_selector) {
+        return css_selector; 
+    }
+    this.attr = function attr(attribute, value) {
+        return '['+attribute+'="'+value+'"]'; 
+    }
+}
+
+function elements(selector) {
+    return new Elements(selector);
+}
+
+function clickme() {
+    var by = new Selectors();
+    if (  elements(by.tag('header')).elements(by.css('.user-block')).elements(by.attr('ng-model', 'email')).first().text() == 'a@x.com') {
+        alert('Задание выполнено!');
+    }
+}
+
+</script>
 </body></html>
